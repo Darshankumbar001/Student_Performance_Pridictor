@@ -1,74 +1,45 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Student Performance Predictor</title>
+    <title>Student Performance Prediction</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <style>
         body {
-    font-family: Arial, sans-serif;
-    background:#f4f6f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    min-height: 100vh;
-
-    padding: 20px 0;
-}
-}
+            font-family: Arial;
+            background: #f4f6f9;
+            text-align: center;
         }
 
         .container {
+            width: 450px;
+            margin: auto;
+            margin-top: 40px;
             background: white;
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-            width: 350px;
-            text-align: center;f
-
-            margin: auto;
-        }
-
-        h2 {
-            color:#333;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
         }
 
         input {
             width: 90%;
             padding: 10px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid#ccc;
+            margin: 5px;
         }
 
         button {
-            background:#4CAF50;
+            width: 95%;
+            padding: 10px;
+            background: #007bff;
             color: white;
             border: none;
-            padding: 10px;
-            width: 95%;
-            border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
         }
 
-        button:hover {
-            background:#45a049;
-        }
-
-        .result {
-            margin-top: 20px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .pass {
-            color: green;
-        }
-
-        .fail {
-            color: red;
-        }
+        .pass { color: green; }
+        .fail { color: red; }
     </style>
 </head>
 
@@ -76,38 +47,37 @@
 
 <div class="container">
 
-    <h2>Student Performance Prediction</h2>
-    <p>Machine Learning Based Web Application</p>
+    <h1>Student Performance Prediction</h1>
 
-    <form action="/predict" method="post">
-
-        <input type="number" name="study" placeholder="Study Hours" required>
-
-        <input type="number" name="attendance" placeholder="Attendance %" required>
-
-        <input type="number" name="assignment" placeholder="Assignment Marks" required>
-
-        <input type="number" name="marks" placeholder="Previous Marks" required>
-
-        <button type="submit">Predict Result</button>
-
+    <form action="/predict" method="POST">
+        <input name="study" placeholder="Study Hours" required><br>
+        <input name="attendance" placeholder="Attendance %" required><br>
+        <input name="assignment" placeholder="Assignment Marks" required><br>
+        <input name="marks" placeholder="Previous Marks" required><br>
+        <button type="submit">Predict</button>
     </form>
 
     {% if prediction_text %}
-    <p><b>Study Hours:</b> {{ study }}</p>
-    <p><b>Attendance:</b> {{ attendance }}</p>
-    <p><b>Assignment Marks:</b> {{ assignment }}</p>
-    <p><b>Previous Marks:</b> {{ marks }}</p>
 
-        <div class="result {{ result_class }}">
-            {{ prediction_text }}
-        </div>
-
+        <h2 class="{{ result_class }}">{{ prediction_text }}</h2>
         <p>Confidence: {{ probability }}%</p>
         <p>{{ recommendation }}</p>
 
-<h3>Performance Analysis Graph</h3>
-<img src="{{ url_for('static', filename='graph.png') }}" width="500">
+        <h3>Model Accuracy: {{ accuracy }}%</h3>
+
+    <h3>Performance Graph</h3>
+    <img src="{{ url_for('static', filename='graph.png') }}" width="350">
+
+    <h3>Confusion Matrix</h3>
+    <img src="{{ url_for('static', filename='confusion_matrix.png') }}" width="300">
+    
+        <h3>Entered Values</h3>
+        <p>Study Hours: {{ study }}</p>
+        <p>Attendance: {{ attendance }}</p>
+        <p>Assignment Marks: {{ assignment }}</p>
+        <p>Previous Marks: {{ marks }}</p>
+
+        <h3>Model Accuracy: {{ accuracy }}%</h3>
 
     {% endif %}
 
